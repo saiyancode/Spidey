@@ -48,19 +48,22 @@ class Spider:
         if page_url not in Spider.crawled:
             print(thread_name + ' now crawling ' + page_url)
             print('Queue ' + str(len(Spider.queue)) + ' | Crawled  ' + str(len(Spider.crawled)))
-            response = requests.get(page_url)
-            status = requests.get(page_url).status_code
-            html = response.text
-            data_file = Spider.data_file
-            response_header = response.headers['Content-Type']
-            base = ''
-            if Spider.type == 'crawl':
-                Spider.add_links_to_queue(Spider.gather_links(page_url, html, status, data_file, response_header))
-                Spider.add_links_to_external(Spider.gather_externals(page_url, html, status, data_file, response_header))
-            Spider.gather_meta(page_url, html,base, status,data_file,response_header)
-            Spider.queue.remove(page_url)
-            Spider.crawled.add(page_url)
-            Spider.update_files()
+            try:
+                response = requests.get(page_url,timeout=5)
+                status = requests.get(page_url).status_code
+                html = response.text
+                data_file = Spider.data_file
+                response_header = response.headers['Content-Type']
+                base = ''
+                if Spider.type == 'crawl':
+                    Spider.add_links_to_queue(Spider.gather_links(page_url, html, status, data_file, response_header))
+                    Spider.add_links_to_external(Spider.gather_externals(page_url, html, status, data_file, response_header))
+                Spider.gather_meta(page_url, html,base, status,data_file,response_header)
+                Spider.queue.remove(page_url)
+                Spider.crawled.add(page_url)
+                Spider.update_files()
+            except:
+                pass
 
     # Converts raw response data into readable information and checks for proper html formatting
     @staticmethod
@@ -72,7 +75,7 @@ class Spider:
             print(str(e))
             return set()
         data = finder.meta_data(html,base,status,page_url,data_file,response_header)
-        print(data)
+        #print(data)
         #return finder.page_links()
 
     # Converts raw response data into readable information and checks for proper html formatting
@@ -88,7 +91,7 @@ class Spider:
         except Exception as e:
             print(str(e))
             return set()
-        print(finder.page_links())
+        #print(finder.page_links())
         return finder.page_links()
 
     # Converts raw response data into readable information and checks for proper html formatting
@@ -100,7 +103,7 @@ class Spider:
         except Exception as e:
             print(str(e))
             return set()
-        print(finder.page_outlinks())
+        #print(finder.page_outlinks())
         return finder.page_outlinks()
 
     # Saves queue data to project files

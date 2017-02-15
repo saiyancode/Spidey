@@ -11,7 +11,7 @@ CRAWLED_FILE = PROJECT_NAME + '/crawled.txt'
 DATA_FILE = PROJECT_NAME + '/data.csv'
 CUSTOM = PROJECT_NAME + '/custom.csv'
 SPIDER_TYPE = 'crawl'
-NUMBER_OF_THREADS = 4
+NUMBER_OF_THREADS = 8
 queue = Queue()
 
 #List or crawl queue

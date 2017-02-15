@@ -13,7 +13,6 @@ class internals():
         self.html = html
         self.links = set()
         soup = BeautifulSoup(html, 'html.parser')
-        print(base)
         for link in soup.find_all('a'):
             try:
                 # IF absolute links are used in the page use this
@@ -85,7 +84,6 @@ class externals():
         self.html = html
         self.links = set()
         soup = BeautifulSoup(html, 'html.parser')
-        print(base)
         for link in soup.find_all('a'):
             try:
                 # IF absolute links are used in the page use this
